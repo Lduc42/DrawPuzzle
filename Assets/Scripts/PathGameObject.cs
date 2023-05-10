@@ -1,0 +1,43 @@
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+public class PathGameObject : MonoBehaviour
+{
+    public static PathGameObject Instance;
+    public List<Vector3> points = new List<Vector3>();
+    LineRenderer lineRenderer;
+    void Awake()
+    {
+        if(Instance == null)
+        {
+            Instance = this;
+        }
+        lineRenderer = GetComponent<LineRenderer>();
+    }
+    void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        
+    }
+
+    public Vector2 GetPosition(int index)
+    {
+        return points[index];
+    }
+
+    public void AddPosition(Vector3 position)
+    {
+        points.Add(position);
+        lineRenderer.positionCount = points.Count;
+        lineRenderer.SetPositions(points.ToArray());
+    }
+
+    public int Count()
+    {
+        return points.Count;
+    }
+}
