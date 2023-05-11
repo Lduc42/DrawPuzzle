@@ -10,6 +10,7 @@ public class MoveObjectAlongPath : MonoBehaviour
     private Vector3 currentPoint; // Điểm hiện tại đang xét
     public PathGameObject pathGameObject;
     private bool isMoving = false; // Cờ hiệu để biết object đang di chuyển hay không
+    private bool isMoved = false;
     private void Awake()
     {
        
@@ -17,7 +18,7 @@ public class MoveObjectAlongPath : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.Instance.pathGameObject != null)
+        if (GameController.Instance.pathGameObject != null && !isMoved)
         {
             // Kiểm tra nếu như object không di chuyển và đường vẽ đã được vẽ
 
@@ -28,6 +29,7 @@ public class MoveObjectAlongPath : MonoBehaviour
                 isMoving = true;
                 Debug.Log("vao day");
                 StartCoroutine(Move());
+                isMoved = true;
             }
         }
 
@@ -44,9 +46,11 @@ public class MoveObjectAlongPath : MonoBehaviour
         // Vòng lặp di chuyển object
         while (isMoving)
         {
+            Debug.Log("currentpointindex: "+ currentPointIndex);
             // Nếu object đến được điểm cuối của đường vẽ, dừng di chuyển
             if (currentPointIndex >= pathGameObject.Count() - 1)
             {
+                Debug.Log("currentPointIndex >= pathGameObject.Count");
                 isMoving = false;
                 break;
             }
@@ -70,6 +74,7 @@ public class MoveObjectAlongPath : MonoBehaviour
             // Cập nhật điểm hiện tại và index đang xét
             currentPointIndex++;
             currentPoint = nextPoint;
+            Debug.Log("current index "+  currentPointIndex);
         }
     }
 }

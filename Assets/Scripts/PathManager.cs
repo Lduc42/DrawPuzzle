@@ -31,7 +31,7 @@ public class PathManager : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        Debug.Log(paths.Count);
+        //Debug.Log(paths.Count);
     }
     public void AddPaths(PathGameObject path)
     {
