@@ -3,9 +3,10 @@
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
+    public float detectionDistance = .2f;
     [SerializeField]
     private LineRenderer LinePrefab;
-    public PathGameObject pathGameObject;
+    private PathGameObject pathGameObject;
     [SerializeField] private MoveObjectAlongPath[] objects;
     private int countDraw = 0; 
 
@@ -21,7 +22,6 @@ public class GameController : MonoBehaviour
     {
 
     }
-
     private void Update()
     {
         if (Input.GetButtonDown("Fire1"))
@@ -31,17 +31,21 @@ public class GameController : MonoBehaviour
         }
         if (Input.GetButton("Fire1"))
         {
-            // Mouse is still down and we are dragging, so keep drawing.
-            Draw(Input.mousePosition);
+           
+               Draw(Input.mousePosition);
+            
+                // Mouse is still down and we are dragging, so keep drawing.
+                
         }
         if (Input.GetButtonUp("Fire1"))
         {
+            
             PathManager.Instance.AddPaths(pathGameObject);
             countDraw++; 
             Debug.Log("draw = " + countDraw);
             if (countDraw == 2)
             {
-
+               
             }
         }
     }
@@ -71,5 +75,9 @@ public class GameController : MonoBehaviour
     public MoveObjectAlongPath GetObject(int index)
     {
         return objects[index];
+    }
+    public PathGameObject GetPath()
+    {
+        return pathGameObject;
     }
 }

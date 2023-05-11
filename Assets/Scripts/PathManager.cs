@@ -25,7 +25,7 @@ public class PathManager : MonoBehaviour
         {
             for(int i = 0; i < max_line; i++)
             {
-                GameController.Instance.GetObject(i).pathGameObject = GetPath(i);
+                GameController.Instance.GetObject(i).SetPathGameObject(GetPath(i));
             }
         }
     }
@@ -38,6 +38,7 @@ public class PathManager : MonoBehaviour
     }
     public void AddPaths(PathGameObject path)
     {
+        path.SetId(Count() - 1);
         paths.Add(path);
     }
     public PathGameObject GetPath(int index)

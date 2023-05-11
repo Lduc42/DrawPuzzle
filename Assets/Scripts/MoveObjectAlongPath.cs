@@ -3,31 +3,30 @@ using UnityEngine;
 
 public class MoveObjectAlongPath : MonoBehaviour
 {
-
     public float speed = 1f; // Tốc độ di chuyển của object
-
+    private float travel_time = 1000; 
     private int currentPointIndex = 0; // Index hiện tại của điểm đang xét
     private Vector3 currentPoint; // Điểm hiện tại đang xét
-    public PathGameObject pathGameObject;
+    private PathGameObject pathGameObject;
     private bool isMoving = false; // Cờ hiệu để biết object đang di chuyển hay không
     private bool isMoved = false;
     private void Awake()
     {
        
     }
-
     private void Update()
     {
-        if (GameController.Instance.pathGameObject != null && !isMoved)
+        if (GetPathGameObject() != null && !isMoved)
         {
             // Kiểm tra nếu như object không di chuyển và đường vẽ đã được vẽ
-
 
             if (!isMoving && PathManager.Instance.Count() == 2 )
             {
                 Debug.Log("move");
                 isMoving = true;
                 Debug.Log("vao day");
+                speed = pathGameObject.Count() * 1.0f / travel_time;
+                Debug.Log("speed: " + speed + "count: " + pathGameObject.Count());
                 StartCoroutine(Move());
                 isMoved = true;
             }
@@ -51,7 +50,7 @@ public class MoveObjectAlongPath : MonoBehaviour
             // Nếu object đến được điểm cuối của đường vẽ, dừng di chuyển
             if (currentPointIndex >= pathGameObject.Count() - 1)
             {
-                Debug.Log("Moved to target");
+                //Debug.Log("Moved to target");
                 isMoving = false;
                 break;
             }
