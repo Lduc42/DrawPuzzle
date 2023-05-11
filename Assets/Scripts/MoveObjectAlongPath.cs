@@ -41,6 +41,7 @@ public class MoveObjectAlongPath : MonoBehaviour
 
     IEnumerator Move()
     {
+        yield return new WaitForSeconds(.5f);
         currentPointIndex = 0;
         currentPoint = pathGameObject.GetPosition(currentPointIndex);
         // Vòng lặp di chuyển object
@@ -50,7 +51,7 @@ public class MoveObjectAlongPath : MonoBehaviour
             // Nếu object đến được điểm cuối của đường vẽ, dừng di chuyển
             if (currentPointIndex >= pathGameObject.Count() - 1)
             {
-                Debug.Log("currentPointIndex >= pathGameObject.Count");
+                Debug.Log("Moved to target");
                 isMoving = false;
                 break;
             }
@@ -76,5 +77,13 @@ public class MoveObjectAlongPath : MonoBehaviour
             currentPoint = nextPoint;
             Debug.Log("current index "+  currentPointIndex);
         }
+    }
+    public PathGameObject GetPathGameObject()
+    {
+        return pathGameObject;
+    }
+    public void SetPathGameObject(PathGameObject value)
+    {
+        pathGameObject = value;
     }
 }

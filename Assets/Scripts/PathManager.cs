@@ -6,6 +6,7 @@ public class PathManager : MonoBehaviour
 {
     public static PathManager Instance;
     public List<PathGameObject> paths = new List<PathGameObject>();
+    [SerializeField] private int max_line;
     private void Awake()
     {
         if(Instance == null)
@@ -20,10 +21,12 @@ public class PathManager : MonoBehaviour
     }
     private void Update()
     {
-        if(Count() == 2)
+        if(Count() == max_line)
         {
-            GameController.Instance.object1.pathGameObject = GetPath(0);
-            GameController.Instance.object2.pathGameObject = GetPath(1);
+            for(int i = 0; i < max_line; i++)
+            {
+                GameController.Instance.GetObject(i).pathGameObject = GetPath(i);
+            }
         }
     }
 

@@ -3,10 +3,10 @@
 public class GameController : MonoBehaviour
 {
     public static GameController Instance;
-    public LineRenderer LinePrefab;
+    [SerializeField]
+    private LineRenderer LinePrefab;
     public PathGameObject pathGameObject;
-    public MoveObjectAlongPath object1; // Object 1 di chuyển theo đường 1
-    public MoveObjectAlongPath object2; // Object 2 di chuyển theo đường 2
+    [SerializeField] private MoveObjectAlongPath[] objects;
     private int countDraw = 0; 
 
     private void Awake()
@@ -67,5 +67,9 @@ public class GameController : MonoBehaviour
                 pathGameObject.AddPosition(hitpoint);
             }
         }
+    }
+    public MoveObjectAlongPath GetObject(int index)
+    {
+        return objects[index];
     }
 }

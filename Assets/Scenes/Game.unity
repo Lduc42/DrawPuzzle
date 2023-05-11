@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   paths: []
+  max_line: 2
 --- !u!1 &728973444
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,8 +383,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LinePrefab: {fileID: 781297574}
   pathGameObject: {fileID: 0}
-  object1: {fileID: 511096967}
-  object2: {fileID: 1972609460}
+  objects:
+  - {fileID: 511096967}
+  - {fileID: 1972609460}
 --- !u!4 &728973446
 Transform:
   m_ObjectHideFlags: 0
