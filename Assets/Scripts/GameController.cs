@@ -77,9 +77,24 @@ public class GameController : MonoBehaviour
             }
             else
             {
-                // TODO: Check distance between points. This just adds all of them, even
-                // if you hold the mouse still.
                 Vector3 hitpoint = ray.GetPoint(distance);
+
+                // Check if the hit point is close to any of the objects
+                foreach (MoveObjectAlongPath obj in objects)
+                {
+                    RaycastHit hit;
+                    if (Physics.Raycast(hitpoint, obj.transform.position - hitpoint, out hit))
+                    {
+                        if (hit.distance <= detectionDistance)
+                        {
+                            // The hit point is close to the object, so add it to the path
+                            pathGameObject.AddPosition(obj.transform.position);
+                            break;
+                        }
+                    }
+                }
+
+                // Add the hit point to the path
                 pathGameObject.AddPosition(hitpoint);
             }
         }
