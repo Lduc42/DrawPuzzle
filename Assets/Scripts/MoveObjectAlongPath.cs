@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class MoveObjectAlongPath : MonoBehaviour
 {
+    #region declare
     public float speed = 1f; // Tốc độ di chuyển của object
     private float travel_time = 10; 
     private int currentPointIndex = 0; // Index hiện tại của điểm đang xét
@@ -10,31 +11,36 @@ public class MoveObjectAlongPath : MonoBehaviour
     public PathGameObject pathGameObject;
     private bool isMoving = false; // Cờ hiệu để biết object đang di chuyển hay không
     private bool isMoved = false;
+    #endregion
     private void Awake()
     {
        
     }
     private void Update()
     {
+        //if have path, move
         if (GetPathGameObject() != null && !isMoved)
         {
-            // Kiểm tra nếu như object không di chuyển và đường vẽ đã được vẽ
-
-            if (!isMoving && PathManager.Instance.Count() == 2 )
-            {
-                Debug.Log("move");
-                isMoving = true;
-                Debug.Log("vao day");
-                speed = pathGameObject.Count() * 1.0f / travel_time;
-                Debug.Log("speed: " + speed + "count: " + pathGameObject.Count());
-                StartCoroutine(Move());
-                isMoved = true;
-            }
+            MoveToTarget();
         }
-
         else
         {
-            //Debug.Log(PathManager.Instance.Count());
+            Debug.Log("not have path");
+        }
+    }
+    private void MoveToTarget()
+    {
+        // Kiểm tra nếu như object không di chuyển và đường vẽ đã được vẽ
+
+        if (!isMoving && PathManager.Instance.Count() == 2)
+        {
+            Debug.Log("move");
+            isMoving = true;
+            Debug.Log("vao day");
+            speed = pathGameObject.Count() * 1.0f / travel_time;
+            Debug.Log("speed: " + speed + "count: " + pathGameObject.Count());
+            StartCoroutine(Move());
+            isMoved = true;
         }
     }
 

@@ -2,6 +2,7 @@
 
 public class GameController : MonoBehaviour
 {
+    #region declare
     public static GameController Instance;
     public float detectionDistance = .2f;
     [SerializeField]
@@ -16,6 +17,7 @@ public class GameController : MonoBehaviour
     private bool canDraw = false;
     private bool canAddToList = false;
     private float intervalDistance = 0.4f; //interval distance that can be correct start points
+    #endregion
     private void Awake()
     {
         if(Instance == null)
@@ -32,64 +34,19 @@ public class GameController : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            // Click, so start drawing a new line.
-            Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            for (int i = 0; i < objects.Length; i++)
-            {
-                if (Mathf.Abs(newPoint.x - objects[i].transform.position.x) < intervalDistance &&
-                    Mathf.Abs(newPoint.y - objects[i].transform.position.y) < intervalDistance)
-                {
-                    LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
-                    LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;
-                    Debug.Log("inbound");
-                    pathGameObject = null;
-                    canDraw = true;
-                    start_id = i + 1;
-                }
-            }
-            Debug.Log(newPoint);
+            //check start point
+            CheckStartValidPoint();
         }
         if (canDraw && Input.GetButton("Fire1"))
         {
             // Mouse is still down and we are dragging, so keep drawing.
             //if object haven't been went to target, draw
-            if(end_id == 0)
-            Draw(Input.mousePosition);
-            Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            for (int i = 0; i < targets.Length; i++)
-            {
-                if (Mathf.Abs(newPoint.x - targets[i].transform.position.x) < intervalDistance &&
-                    Mathf.Abs(newPoint.y - targets[i].transform.position.y) < intervalDistance)
-                {
-                    end_id = i + 1;
-                }
-            }
-            Debug.Log("end_id" + end_id);
+            DrawToTarget();
         }
         if (Input.GetButtonUp("Fire1"))
         {
-            pathGameObject.SetId(start_id);
-            Debug.Log("id path: " + pathGameObject.GetId());
-            Debug.Log("id target: " + targetId);
-            //check correct
-            if (end_id == pathGameObject.GetId())
-            {
-               PathManager.Instance.AddPaths(pathGameObject);
-            }
-            else
-            {
-                Debug.Log("Vao day");
-                Destroy(pathGameObject.gameObject);
-            }
-            canDraw = false;
-            countDraw++; 
-            Debug.Log("draw = " + countDraw);
-            if (countDraw == 2)
-            {
-               
-            }
-            end_id = 0;
-            pathGameObject = null;
+            //process after draw
+            CompleteDraw();
         }
     }
 
@@ -122,5 +79,60 @@ public class GameController : MonoBehaviour
     public PathGameObject GetPath()
     {
         return pathGameObject;
+    }
+    private void CheckStartValidPoint()
+    {
+        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (Mathf.Abs(newPoint.x - objects[i].transform.position.x) < intervalDistance &&
+                Mathf.Abs(newPoint.y - objects[i].transform.position.y) < intervalDistance)
+            {
+                LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
+                LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;
+                Debug.Log("inbound");
+                pathGameObject = null;
+                canDraw = true;
+                start_id = i + 1;
+            }
+        }
+    }
+    private void DrawToTarget()
+    {
+        // Mouse is still down and we are dragging, so keep drawing.
+        //if object haven't been went to target, draw
+        if (end_id == 0)
+            Draw(Input.mousePosition);
+        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        for (int i = 0; i < targets.Length; i++)
+        {
+            if (Mathf.Abs(newPoint.x - targets[i].transform.position.x) < intervalDistance &&
+                Mathf.Abs(newPoint.y - targets[i].transform.position.y) < intervalDistance)
+            {
+                end_id = i + 1;
+            }
+        }
+    }
+    private void CompleteDraw()
+    {
+        pathGameObject.SetId(start_id);
+        //check correct
+        if (end_id == pathGameObject.GetId())
+        {
+            PathManager.Instance.AddPaths(pathGameObject);
+        }
+        else
+        {
+            Destroy(pathGameObject.gameObject);
+        }
+        canDraw = false;
+        countDraw++;
+        Debug.Log("draw = " + countDraw);
+        if (countDraw == 2)
+        {
+
+        }
+        end_id = 0;
+        pathGameObject = null;
     }
 }

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PathManager : MonoBehaviour
 {
+    #region delcare
     public static PathManager Instance;
     public List<PathGameObject> paths = new List<PathGameObject>();
     [SerializeField] private int max_line;
+    #endregion
     private void Awake()
     {
         if(Instance == null)
@@ -21,26 +23,31 @@ public class PathManager : MonoBehaviour
     }
     private void Update()
     {
+        //complete all line, set line for each object
         if(Count() == max_line)
         {
-            for(int i = 0; i < max_line; i++)
-            {
-                for (int j = 0; j < max_line; j++)
-                {
-                    if (Mathf.Abs(GetPath(j).GetFirstPosition().x - GameController.Instance.GetObject(i).transform.position.x) <= 0.3f &&
-                        Mathf.Abs(GetPath(j).GetFirstPosition().y -
-                                  GameController.Instance.GetObject(i).transform.position.y) <= 0.3f)
-                    {
-                        GameController.Instance.GetObject(i).SetPathGameObject(GetPath(j));
-                    }
-                }               
-            }
+            SetPathForObject();
         }
     }
     // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
-        //Debug.Log(paths.Count);
+        
+    }
+    private void SetPathForObject()
+    {
+        for (int i = 0; i < max_line; i++)
+        {
+            for (int j = 0; j < max_line; j++)
+            {
+                if (Mathf.Abs(GetPath(j).GetFirstPosition().x - GameController.Instance.GetObject(i).transform.position.x) <= 0.3f &&
+                    Mathf.Abs(GetPath(j).GetFirstPosition().y -
+                              GameController.Instance.GetObject(i).transform.position.y) <= 0.3f)
+                {
+                    GameController.Instance.GetObject(i).SetPathGameObject(GetPath(j));
+                }
+            }
+        }
     }
     public void AddPaths(PathGameObject path)
     {

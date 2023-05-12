@@ -3,11 +3,13 @@ using UnityEngine;
 
 public class PathGameObject : MonoBehaviour
 {
+    #region declare
     public static PathGameObject Instance;
     public List<Vector3> points = new List<Vector3>();
     LineRenderer lineRenderer;
     private int id;
     private int idToCheck;
+    #endregion
     void Awake()
     {
         if(Instance == null)
