@@ -10,7 +10,6 @@ public class ObjectToMovement : MonoBehaviour
     {
         
     }
-
     // Update is called once per frame
     void Update()
     {

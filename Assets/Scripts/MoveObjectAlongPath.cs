@@ -25,7 +25,7 @@ public class MoveObjectAlongPath : MonoBehaviour
         }
         else
         {
-            Debug.Log("not have path");
+            
         }
     }
     private void MoveToTarget()
