@@ -7,6 +7,7 @@ public class PathGameObject : MonoBehaviour
     public List<Vector3> points = new List<Vector3>();
     LineRenderer lineRenderer;
     private int id;
+    private int idToCheck;
     void Awake()
     {
         if(Instance == null)
@@ -24,9 +25,17 @@ public class PathGameObject : MonoBehaviour
     {
         
     }
+    public void SetIdToCheck(int value)
+    {
+        idToCheck = value;
+    }
     public void SetId(int idx)
     {
         id = idx;
+    }
+    public int GetId()
+    {
+        return id;
     }
     public Vector2 GetPosition(int index)
     {
@@ -55,7 +64,7 @@ public class PathGameObject : MonoBehaviour
     }
     public bool IsPathValid()
     {
-        
-            return false;
+
+        return false;
     }
 }

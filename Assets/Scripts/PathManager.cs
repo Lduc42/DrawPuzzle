@@ -33,13 +33,10 @@ public class PathManager : MonoBehaviour
                     {
                         GameController.Instance.GetObject(i).SetPathGameObject(GetPath(j));
                     }
-                }
-                
+                }               
             }
         }
     }
-
-
     // Update is called once per frame
     void LateUpdate()
     {

@@ -74,7 +74,7 @@ public class MoveObjectAlongPath : MonoBehaviour
             // Cập nhật điểm hiện tại và index đang xét
             currentPointIndex++;
             currentPoint = nextPoint;
-            Debug.Log("current index "+  currentPointIndex);
+            //Debug.Log("current index "+  currentPointIndex);
         }
     }
     public PathGameObject GetPathGameObject()

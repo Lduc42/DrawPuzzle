@@ -20,4 +20,11 @@ public class ObjectToMovement : MonoBehaviour
     {
         return id;
     }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("ObjectToMovement"))
+        {
+            Time.timeScale = 0;
+        }
+    }
 }
