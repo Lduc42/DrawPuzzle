@@ -4,10 +4,10 @@ using UnityEngine;
 public class MoveObjectAlongPath : MonoBehaviour
 {
     public float speed = 1f; // Tốc độ di chuyển của object
-    private float travel_time = 1000; 
+    private float travel_time = 10; 
     private int currentPointIndex = 0; // Index hiện tại của điểm đang xét
     private Vector3 currentPoint; // Điểm hiện tại đang xét
-    private PathGameObject pathGameObject;
+    public PathGameObject pathGameObject;
     private bool isMoving = false; // Cờ hiệu để biết object đang di chuyển hay không
     private bool isMoved = false;
     private void Awake()
@@ -46,7 +46,7 @@ public class MoveObjectAlongPath : MonoBehaviour
         // Vòng lặp di chuyển object
         while (isMoving)
         {
-            Debug.Log("currentpointindex: "+ currentPointIndex);
+            //Debug.Log("currentpointindex: "+ currentPointIndex);
             // Nếu object đến được điểm cuối của đường vẽ, dừng di chuyển
             if (currentPointIndex >= pathGameObject.Count() - 1)
             {

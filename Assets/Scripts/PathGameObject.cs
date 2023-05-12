@@ -48,6 +48,11 @@ public class PathGameObject : MonoBehaviour
     {
         return points[Count() - 1];
     }
+
+    public Vector2 GetFirstPosition()
+    {
+        return points[0];
+    }
     public bool IsPathValid()
     {
         

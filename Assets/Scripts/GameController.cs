@@ -8,8 +8,8 @@ public class GameController : MonoBehaviour
     private LineRenderer LinePrefab;
     private PathGameObject pathGameObject;
     [SerializeField] private MoveObjectAlongPath[] objects;
-    private int countDraw = 0; 
-
+    private int countDraw = 0;
+    private bool canDraw = false;
     private void Awake()
     {
         if(Instance == null)
@@ -27,26 +27,38 @@ public class GameController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             // Click, so start drawing a new line.
-            pathGameObject = null;
-        }
-        if (Input.GetButton("Fire1"))
-        {
-           
-               Draw(Input.mousePosition);
+            Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            for (int i = 0; i < objects.Length; i++)
+            {
+                if (Mathf.Abs(newPoint.x - objects[i].transform.position.x) < 0.5f &&
+                    Mathf.Abs(newPoint.y - objects[i].transform.position.y) < 0.5f)
+                {
+                    Debug.Log("inbound");
+                    pathGameObject = null;
+                    canDraw = true;
+                }
+            }
+            Debug.Log(newPoint);
             
-                // Mouse is still down and we are dragging, so keep drawing.
-                
+        }
+        if (canDraw && Input.GetButton("Fire1"))
+        {
+            // Mouse is still down and we are dragging, so keep drawing.
+            Draw(Input.mousePosition);
         }
         if (Input.GetButtonUp("Fire1"))
         {
             
             PathManager.Instance.AddPaths(pathGameObject);
+            canDraw = false;
             countDraw++; 
             Debug.Log("draw = " + countDraw);
             if (countDraw == 2)
             {
                
             }
+
+            pathGameObject = null;
         }
     }
 
