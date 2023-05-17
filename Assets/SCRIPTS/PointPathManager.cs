@@ -19,7 +19,7 @@ public class PointPathManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Lose");
+           // Debug.Log("Lose");
         }
     }
     public bool CheckPassPoint()

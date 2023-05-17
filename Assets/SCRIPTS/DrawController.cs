@@ -111,12 +111,18 @@ public class DrawController : MonoBehaviour
             if (Mathf.Abs(newPoint.x - objects[i].transform.position.x) < intervalDistance &&
                 Mathf.Abs(newPoint.y - objects[i].transform.position.y) < intervalDistance)
             {
-                LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
-                LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;
+               /* LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
+                LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;*/
                 Debug.Log("inbound");
                 pathGameObject = null;
                 canDraw = true;
                 start_id = i + 1;
+            }
+            else
+            {
+                Debug.Log(objects[i].transform.position);
+                Debug.Log("mouse: " + newPoint);
+                Debug.Log("invalid input");
             }
         }
     }
@@ -138,9 +144,10 @@ public class DrawController : MonoBehaviour
     }
     private void CompleteDraw()
     {
+        if(pathGameObject != null)
         pathGameObject.SetId(start_id);
         //check correct
-        if (end_id == pathGameObject.GetId())
+        if (end_id == pathGameObject.GetId() && pathGameObject != null)
         {
             PathManager.Instance.AddPaths(pathGameObject);
         }
