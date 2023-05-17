@@ -1,0 +1,15 @@
+letter .png
+size:399,399
+filter:Linear,Linear
+pma:true
+Layer 26
+bounds:2,177,329,220
+offsets:2,2,333,224
+Layer 27
+bounds:159,2,173,155
+offsets:2,2,177,160
+rotate:90
+Layer 27 copy 2
+bounds:2,2,173,155
+offsets:2,2,177,160
+rotate:90

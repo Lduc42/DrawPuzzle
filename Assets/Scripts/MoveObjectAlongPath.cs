@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+
 public class MoveObjectAlongPath : MonoBehaviour
 {
     #region declare
     public float speed = 1f; // Tốc độ di chuyển của object
-    private float travel_time = 10; 
+
+    private float travel_time = 10;
     private int currentPointIndex = 0; // Index hiện tại của điểm đang xét
     private Vector3 currentPoint; // Điểm hiện tại đang xét
     public PathGameObject pathGameObject;
@@ -14,7 +16,7 @@ public class MoveObjectAlongPath : MonoBehaviour
     #endregion
     private void Awake()
     {
-       
+
     }
     private void Update()
     {
@@ -25,7 +27,7 @@ public class MoveObjectAlongPath : MonoBehaviour
         }
         else
         {
-            
+
         }
     }
     private void MoveToTarget()

@@ -57,6 +57,7 @@ public class PathGameObject : MonoBehaviour
     }
     public Vector2 GetLastPosition()
     {
+        if (Count() == 0) return this.transform.position;
         return points[Count() - 1];
     }
 

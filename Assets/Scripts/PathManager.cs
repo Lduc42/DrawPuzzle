@@ -40,11 +40,11 @@ public class PathManager : MonoBehaviour
         {
             for (int j = 0; j < max_line; j++)
             {
-                if (Mathf.Abs(GetPath(j).GetFirstPosition().x - GameController.Instance.GetObject(i).transform.position.x) <= 0.3f &&
+                if (Mathf.Abs(GetPath(j).GetFirstPosition().x - DrawController.Instance.GetObject(i).transform.position.x) <= 0.3f &&
                     Mathf.Abs(GetPath(j).GetFirstPosition().y -
-                              GameController.Instance.GetObject(i).transform.position.y) <= 0.3f)
+                              DrawController.Instance.GetObject(i).transform.position.y) <= 0.3f)
                 {
-                    GameController.Instance.GetObject(i).SetPathGameObject(GetPath(j));
+                    DrawController.Instance.GetObject(i).SetPathGameObject(GetPath(j));
                 }
             }
         }
