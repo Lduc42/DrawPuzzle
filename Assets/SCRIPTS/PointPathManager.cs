@@ -6,6 +6,7 @@ public class PointPathManager : MonoBehaviour
 {
     [SerializeField] private PointPath[] points;
     private bool pass_checkpoint;
+    private List<int> complete_point_path;
     void Start()
     {
 
@@ -13,16 +14,16 @@ public class PointPathManager : MonoBehaviour
 
     void Update()
     {
-        if(CheckPassPoint() == true)
+        if(CheckPassLevel() == true)
         {
-            Debug.Log("Win");
+            //Debug.Log("Win");
         }
         else
         {
            // Debug.Log("Lose");
         }
     }
-    public bool CheckPassPoint()
+    public bool CheckPassLevel()
     {
         foreach(PointPath path in points)
         {

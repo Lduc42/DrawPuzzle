@@ -37,7 +37,7 @@ public class DrawController : MonoBehaviour
         if (Input.GetButtonDown("Fire1"))
         {
             //check start point
-            CheckStartValidPoint();
+            Check();
         }
         if (canDraw && Input.GetButton("Fire1"))
         {
@@ -47,7 +47,6 @@ public class DrawController : MonoBehaviour
         }
         if (Input.GetButtonUp("Fire1"))
         {
-
             //process after draw
             CompleteDraw();
         }
@@ -55,6 +54,7 @@ public class DrawController : MonoBehaviour
 
     public void Draw(Vector3 position)
     {
+        Debug.Log("draw");
         // Create a plane and see where the mouse click intersects it. 
         Plane plane = new Plane(Camera.main.transform.forward * -1, position);
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -63,27 +63,13 @@ public class DrawController : MonoBehaviour
             if (pathGameObject == null)
             {
                 // Starting a new line. Instantiate our "Path Object"
-                pathGameObject =
-                    UnityEngine.Object.Instantiate(LinePrefab).GetComponent<PathGameObject>();
+                pathGameObject = Instantiate(LinePrefab).GetComponent<PathGameObject>();
+                pathGameObject.SetId(start_id);
             }
             else
             {
                 Vector3 hitpoint = ray.GetPoint(distance);
                 Vector3 lastPosition = pathGameObject.GetLastPosition();
-                // Kiểm tra va chạm với vật cản
-                /*                float distanceToMouse = Vector3.Distance(pathGameObject.GetLastPosition(), hitpoint);
-                                Vector3 temp = (hitpoint - lastPosition);
-                                Debug.Log(temp);
-                                //RaycastHit hit;
-                                RaycastHit2D hit = Physics2D.Raycast(pathGameObject.GetLastPosition(), hitpoint - lastPosition, distanceToMouse);
-                                    if (hit.collider != null && hit.collider.CompareTag("Obstacle"))
-                                    {
-                                        Debug.Log("vat can");
-                                        return;
-                                    }
-                                    // Nếu không có va chạm hoặc va chạm với vật cản, không thêm điểm vào đường vẽ
-
-                                // Add the hit point to the path*/
                 Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Collider2D collision = collision = Physics2D.OverlapPoint(newPoint);
                 RaycastHit2D hit = Physics2D.Linecast(lastPosition, newPoint);
@@ -92,8 +78,23 @@ public class DrawController : MonoBehaviour
                     return;
                 }
                 pathGameObject.AddPosition(hitpoint);
-            }
+            }    
         }
+    }
+    public void Check()
+    {
+      
+        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D collision = collision = Physics2D.OverlapPoint(newPoint);
+        if (collision.CompareTag("ObjectToMovement"))
+        {
+            ObjectToMovement objectToMovement = collision.GetComponent<ObjectToMovement>();
+            pathGameObject = null;
+            canDraw = true;
+            start_id = objectToMovement.GetId();
+            Debug.Log("start: " + start_id);
+        }
+
     }
     public MoveObjectAlongPath GetObject(int index)
     {
@@ -103,7 +104,7 @@ public class DrawController : MonoBehaviour
     {
         return pathGameObject;
     }
-    private void CheckStartValidPoint()
+/*    private void CheckStartValidPoint()
     {
         Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         for (int i = 0; i < objects.Length; i++)
@@ -111,8 +112,8 @@ public class DrawController : MonoBehaviour
             if (Mathf.Abs(newPoint.x - objects[i].transform.position.x) < intervalDistance &&
                 Mathf.Abs(newPoint.y - objects[i].transform.position.y) < intervalDistance)
             {
-               /* LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
-                LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;*/
+               *//* LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
+                LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;*//*
                 Debug.Log("inbound");
                 pathGameObject = null;
                 canDraw = true;
@@ -125,36 +126,48 @@ public class DrawController : MonoBehaviour
                 Debug.Log("invalid input");
             }
         }
-    }
+    }*/
+
     private void DrawToTarget()
     {
         // Mouse is still down and we are dragging, so keep drawing.
         //if object haven't been went to target, draw
         if (end_id == 0)
             Draw(Input.mousePosition);
+        /*        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                for (int i = 0; i < targets.Length; i++)
+                {
+                    if (Mathf.Abs(newPoint.x - targets[i].transform.position.x) < intervalDistance &&
+                        Mathf.Abs(newPoint.y - targets[i].transform.position.y) < intervalDistance)
+                    {
+                        end_id = i + 1;
+                    }
+                }*/
         Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        for (int i = 0; i < targets.Length; i++)
+        Collider2D collision = collision = Physics2D.OverlapPoint(newPoint);
+        if (collision.CompareTag("TargetObject"))
         {
-            if (Mathf.Abs(newPoint.x - targets[i].transform.position.x) < intervalDistance &&
-                Mathf.Abs(newPoint.y - targets[i].transform.position.y) < intervalDistance)
-            {
-                end_id = i + 1;
-            }
+            TargetObject target_object = collision.GetComponent<TargetObject>();
+            end_id = target_object.GetId();
         }
     }
     private void CompleteDraw()
     {
         if(pathGameObject != null)
         pathGameObject.SetId(start_id);
+        Debug.Log("start id: " + start_id);
         //check correct
-        if (end_id == pathGameObject.GetId() && pathGameObject != null)
+        if (pathGameObject != null && end_id == pathGameObject.GetId())
         {
             PathManager.Instance.AddPaths(pathGameObject);
         }
         else
         {
-            pathGameObject.points.Clear();
-            Destroy(pathGameObject.gameObject);
+            if(pathGameObject != null)
+            {
+                pathGameObject.points.Clear();
+                Destroy(pathGameObject.gameObject);
+            }
         }
         canDraw = false;
         countDraw++;
@@ -164,20 +177,6 @@ public class DrawController : MonoBehaviour
 
         }
         end_id = 0;
-        pathGameObject = null;
-    }
-    private bool IsObstaclePoint()
-    {
-        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        for (int i = 0; i < obstacles.Length; i++)
-        {
-            if (Mathf.Abs(newPoint.x - obstacles[i].transform.position.x) < obstacles[i].GetHalfWidth() &&
-                Mathf.Abs(newPoint.y - obstacles[i].transform.position.y) < obstacles[i].GetHalfHeight())
-            {
-                Debug.Log("va cham chuong ngai vat");
-                return true;
-            }
-        }
-        return false;
+        //pathGameObject = null;
     }
 }

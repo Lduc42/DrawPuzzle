@@ -26,13 +26,12 @@ public class TargetObject : MonoBehaviour
             if (collidedObject != null)
             {
                 int collidedId = collidedObject.GetId();
-                Debug.Log("collidedId: " + collidedId);
+                //Debug.Log("collidedId: " + collidedId);
                 if (collidedId == id)
                 {
                     Debug.Log("moved to target " + collidedId.ToString());
                 }
             }
-            Debug.Log("cham cham object");
         }
     }
     public int GetId()

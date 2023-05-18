@@ -6,16 +6,17 @@ public class MoveObjectAlongPath : MonoBehaviour
 {
     #region declare
     public float speed = 1f; // Tốc độ di chuyển của object
-    public SkeletonAnimation skeletonAnimation;
-    public AnimationReferenceAsset idle, move;
-    public string current_state;
-    public string current_animation;
     private float travel_time = 10;
     private int currentPointIndex = 0; // Index hiện tại của điểm đang xét
     private Vector3 currentPoint; // Điểm hiện tại đang xét
     public PathGameObject pathGameObject;
     private bool isMoving = false; // Cờ hiệu để biết object đang di chuyển hay không
     private bool isMoved = false;
+    [SerializeField]
+    private CharacterStateManager state_manager;
+    [SerializeField]
+    private PointPath point_path;
+    private bool not_move = false;
     #endregion
     private void Awake()
     {
@@ -23,8 +24,7 @@ public class MoveObjectAlongPath : MonoBehaviour
     }
     private void Start()
     {
-        current_state = "Idle";
-        //SetCharacterState(current_state);
+
     }
     private void Update()
     {
@@ -42,10 +42,10 @@ public class MoveObjectAlongPath : MonoBehaviour
     {
         // Kiểm tra nếu như object không di chuyển và đường vẽ đã được vẽ
 
-        if (!isMoving && PathManager.Instance.Count() == 2)
+        if (!isMoving && PathManager.Instance.IsEnough())
         {
             Debug.Log("move");
-            
+            state_manager.current_state = "Move";
             isMoving = true;
             Debug.Log("vao day");
             speed = pathGameObject.Count() * 1.0f / travel_time;
@@ -58,7 +58,7 @@ public class MoveObjectAlongPath : MonoBehaviour
     IEnumerator Move()
     {
         yield return new WaitForSeconds(.5f);
-        //SetCharacterState("Move");
+        
         currentPointIndex = 0;
         currentPoint = pathGameObject.GetPosition(currentPointIndex);
         // Vòng lặp di chuyển object
@@ -70,7 +70,9 @@ public class MoveObjectAlongPath : MonoBehaviour
             {
                 //Debug.Log("Moved to target");
                 isMoving = false;
-                //SetCharacterState("Idle");
+                if(point_path.CheckInActiveAllPoint())
+                state_manager.current_state = "Win";
+                else state_manager.current_state = "Lose";
                 break;
             }
 
@@ -85,16 +87,59 @@ public class MoveObjectAlongPath : MonoBehaviour
             float t = 0f;
             while (t < timeToMove)
             {
-                t += Time.deltaTime;
-                transform.position = Vector3.Lerp(currentPoint, nextPoint, t / timeToMove);
+                if (!not_move)
+                {
+                    t += Time.deltaTime;
+                    transform.position = Vector3.Lerp(currentPoint, nextPoint, t / timeToMove);
+                }
                 yield return null;
             }
 
             // Cập nhật điểm hiện tại và index đang xét
-            currentPointIndex++;
-            currentPoint = nextPoint;
+            if (!not_move)
+            {
+                currentPointIndex++;
+                currentPoint = nextPoint;
+            }
+     
             //Debug.Log("current index "+  currentPointIndex);
         }
+    }
+    public void SetMove(bool value)
+    {
+        not_move = value;
+    }
+    public bool GetMove()
+    {
+        return not_move;
+    }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Point"))
+        {
+            Debug.Log("object va cham voi point");
+            // get object
+            Point collidedObject = other.gameObject.GetComponent<Point>();
+            if (collidedObject != null)
+            {
+                int collidedId = collidedObject.GetId();
+                Debug.Log("collidedId: " + collidedId);
+                if (collidedId == pathGameObject.GetId())
+                {
+                    Debug.Log("pass point");
+                    collidedObject.gameObject.SetActive(false);
+                    not_move = true;
+                    state_manager.current_state = collidedObject.GetState();
+                    StartCoroutine(Delay(0.8f));
+                    
+                }
+                else
+                {
+                    //Debug.Log("id point:" + id);
+                }
+            }
+        }
+
     }
     public PathGameObject GetPathGameObject()
     {
@@ -104,21 +149,9 @@ public class MoveObjectAlongPath : MonoBehaviour
     {
         pathGameObject = value;
     }
-    public void SetAnimation(AnimationReferenceAsset animation, bool loop, float time_scale)
+    IEnumerator Delay(float time)
     {
-        if (animation.name.Equals(current_animation)) return;
-        skeletonAnimation.state.SetAnimation(0, animation, loop).TimeScale = time_scale;
-        current_animation = animation.name;
-    }
-    public void SetCharacterState(string state)
-    {
-        if (state.Equals("Idle"))
-        {
-            SetAnimation(idle, true, 1f);
-        }
-        else if (state.Equals("Move"))
-        {
-            SetAnimation(move, true, 1f);
-        }
+        yield return new WaitForSeconds(time);
+        not_move = false;
     }
 }

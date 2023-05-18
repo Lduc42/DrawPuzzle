@@ -8,6 +8,7 @@ public class PointPath : MonoBehaviour
     private int count_point = 0;
     private bool allInActive = false;
     [SerializeField] private int id;
+    private bool pass_all_point;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,14 @@ public class PointPath : MonoBehaviour
         {
             allInActive = true;
         }
+    }
+    public bool GetPassAllPoint()
+    {
+        return pass_all_point;
+    }
+    public void SetPassAllPoint(bool value)
+    {
+        pass_all_point = value;
     }
     public int CountPoint()
     {

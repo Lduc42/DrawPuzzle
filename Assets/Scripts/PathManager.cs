@@ -26,6 +26,7 @@ public class PathManager : MonoBehaviour
         //complete all line, set line for each object
         if(Count() == max_line)
         {
+           // Debug.Log("du line");
             SetPathForObject();
         }
     }
@@ -40,18 +41,22 @@ public class PathManager : MonoBehaviour
         {
             for (int j = 0; j < max_line; j++)
             {
-                if (Mathf.Abs(GetPath(j).GetFirstPosition().x - DrawController.Instance.GetObject(i).transform.position.x) <= 0.3f &&
+                if (Mathf.Abs(GetPath(j).GetFirstPosition().x - DrawController.Instance.GetObject(i).transform.position.x) <= 1f &&
                     Mathf.Abs(GetPath(j).GetFirstPosition().y -
-                              DrawController.Instance.GetObject(i).transform.position.y) <= 0.3f)
+                              DrawController.Instance.GetObject(i).transform.position.y) <= 1f)
                 {
                     DrawController.Instance.GetObject(i).SetPathGameObject(GetPath(j));
+                }
+                else
+                {
+                    //Debug.Log("xa object");
                 }
             }
         }
     }
     public void AddPaths(PathGameObject path)
     {
-        path.SetId(Count() - 1);
+        //path.SetId(Count() - 1);
         paths.Add(path);
     }
     public PathGameObject GetPath(int index)
@@ -61,5 +66,10 @@ public class PathManager : MonoBehaviour
     public int Count()
     {
         return paths.Count;
+    }
+    public bool IsEnough()
+    {
+        if (Count() - max_line == 0) return true;
+        else return false;
     }
 }

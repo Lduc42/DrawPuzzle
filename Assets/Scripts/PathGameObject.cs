@@ -7,15 +7,12 @@ public class PathGameObject : MonoBehaviour
     public static PathGameObject Instance;
     public List<Vector3> points = new List<Vector3>();
     LineRenderer lineRenderer;
-    private int id;
+    public int id;
     private int idToCheck;
     #endregion
     void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
+
         lineRenderer = GetComponent<LineRenderer>();
     }
     void Start()
@@ -27,6 +24,7 @@ public class PathGameObject : MonoBehaviour
     {
         
     }
+    
     public void SetIdToCheck(int value)
     {
         idToCheck = value;
