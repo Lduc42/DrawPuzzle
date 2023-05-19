@@ -6,7 +6,7 @@ public class PathManager : MonoBehaviour
 {
     #region delcare
     public static PathManager Instance;
-    public List<PathGameObject> paths = new List<PathGameObject>();
+    private List<PathGameObject> paths = new List<PathGameObject>();
     [SerializeField] private int max_line;
     #endregion
     private void Awake()

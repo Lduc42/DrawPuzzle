@@ -17,13 +17,17 @@ public class MoveObjectAlongPath : MonoBehaviour
     [SerializeField]
     private PointPath point_path;
     private bool not_move = false;
+    [SerializeField] private TargetStateManager target_state;
+    private Subject _subject = new Subject();
     #endregion
     private void Awake()
     {
+        
 
     }
     private void Start()
     {
+        _subject.RegisterObserver(target_state);
 
     }
     private void Update()
@@ -70,9 +74,16 @@ public class MoveObjectAlongPath : MonoBehaviour
             {
                 //Debug.Log("Moved to target");
                 isMoving = false;
-                if(point_path.CheckInActiveAllPoint())
-                state_manager.current_state = "Win";
-                else state_manager.current_state = "Lose";
+                if (point_path.CheckInActiveAllPoint())
+                {
+                    state_manager.current_state = "Win";
+                    _subject.NotifyWinObservers();
+                }
+                else
+                {
+                    state_manager.current_state = "Lose";
+                    _subject.NotifyLoseObservers();
+                }
                 break;
             }
 
@@ -94,7 +105,8 @@ public class MoveObjectAlongPath : MonoBehaviour
                 }
                 yield return null;
             }
-
+            
+            //lineRenderer.SetPosition(1, nextPoint);
             // Cập nhật điểm hiện tại và index đang xét
             if (!not_move)
             {

@@ -556,6 +556,7 @@ MonoBehaviour:
   pathGameObject: {fileID: 0}
   state_manager: {fileID: 170602271}
   point_path: {fileID: 836650905}
+  target_state: {fileID: 1233795914}
 --- !u!114 &170602276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -805,6 +806,7 @@ GameObject:
   - component: {fileID: 260612841}
   - component: {fileID: 260612840}
   - component: {fileID: 260612839}
+  - component: {fileID: 260612842}
   m_Layer: 0
   m_Name: TargetOrange
   m_TagString: TargetObject
@@ -941,6 +943,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &260612842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 260612836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6709062bb284d42a1a46ac5c48bf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonAnimation: {fileID: 1983198869}
+  idle: {fileID: 11400000, guid: e055fa964d13840678c1b2d3c3b1907c, type: 2}
+  lose: {fileID: 11400000, guid: fd790e128fb4543049539b7abfaddc77, type: 2}
+  win: {fileID: 11400000, guid: 85ae75f6136e745b88f94edc5b44745d, type: 2}
+  current_state: 
+  current_animation: 
 --- !u!1 &326709983
 GameObject:
   m_ObjectHideFlags: 0
@@ -988,7 +1008,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40b495507f712d1449f4ad62b205ae03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetObjects: []
+  targetObjects:
+  - {fileID: 584558599}
+  - {fileID: 260612839}
+  - {fileID: 1233795910}
 --- !u!1 &511096966
 GameObject:
   m_ObjectHideFlags: 0
@@ -1026,6 +1049,7 @@ MonoBehaviour:
   pathGameObject: {fileID: 0}
   state_manager: {fileID: 0}
   point_path: {fileID: 0}
+  target_state: {fileID: 0}
 --- !u!212 &511096968
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1365,7 +1389,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c938409f7698bfe4199003291ad0710f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paths: []
   max_line: 3
 --- !u!1 &584558596
 GameObject:
@@ -1380,6 +1403,7 @@ GameObject:
   - component: {fileID: 584558601}
   - component: {fileID: 584558600}
   - component: {fileID: 584558599}
+  - component: {fileID: 584558602}
   m_Layer: 0
   m_Name: TargetBlue
   m_TagString: TargetObject
@@ -1516,6 +1540,24 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &584558602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584558596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6709062bb284d42a1a46ac5c48bf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonAnimation: {fileID: 2109860616}
+  idle: {fileID: 11400000, guid: e055fa964d13840678c1b2d3c3b1907c, type: 2}
+  lose: {fileID: 11400000, guid: fd790e128fb4543049539b7abfaddc77, type: 2}
+  win: {fileID: 11400000, guid: 85ae75f6136e745b88f94edc5b44745d, type: 2}
+  current_state: 
+  current_animation: 
 --- !u!1 &707441262
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,6 +1761,7 @@ MonoBehaviour:
   pathGameObject: {fileID: 0}
   state_manager: {fileID: 707441271}
   point_path: {fileID: 1421734329}
+  target_state: {fileID: 584558602}
 --- !u!114 &707441271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1773,7 +1816,7 @@ MonoBehaviour:
   detectionDistance: 1
   LinePrefab: {fileID: 4901907027133017161, guid: 270ac9bd706d940c590962f14dab9062, type: 3}
   pathGameObject: {fileID: 0}
-  objects:
+  characters:
   - {fileID: 707441270}
   - {fileID: 1222117605}
   - {fileID: 170602275}
@@ -1868,7 +1911,7 @@ GameObject:
   - component: {fileID: 755165290}
   m_Layer: 0
   m_Name: BoyPink
-  m_TagString: TargetObject
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2475,6 +2518,7 @@ MonoBehaviour:
   pathGameObject: {fileID: 0}
   state_manager: {fileID: 1222117609}
   point_path: {fileID: 735005386}
+  target_state: {fileID: 260612842}
 --- !u!114 &1222117606
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2598,6 +2642,7 @@ GameObject:
   - component: {fileID: 1233795912}
   - component: {fileID: 1233795911}
   - component: {fileID: 1233795910}
+  - component: {fileID: 1233795914}
   m_Layer: 0
   m_Name: TargetPink
   m_TagString: TargetObject
@@ -2734,6 +2779,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1233795914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233795908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6709062bb284d42a1a46ac5c48bf3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skeletonAnimation: {fileID: 755165293}
+  idle: {fileID: 11400000, guid: e055fa964d13840678c1b2d3c3b1907c, type: 2}
+  lose: {fileID: 11400000, guid: fd790e128fb4543049539b7abfaddc77, type: 2}
+  win: {fileID: 11400000, guid: 85ae75f6136e745b88f94edc5b44745d, type: 2}
+  current_state: 
+  current_animation: 
 --- !u!1 &1244284016
 GameObject:
   m_ObjectHideFlags: 0
@@ -3872,7 +3935,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: ea8ef4b07b4d99c46956804bf67e593e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3921,6 +3984,7 @@ MonoBehaviour:
   pathGameObject: {fileID: 0}
   state_manager: {fileID: 0}
   point_path: {fileID: 0}
+  target_state: {fileID: 0}
 --- !u!212 &1972609461
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4065,7 +4129,7 @@ GameObject:
   - component: {fileID: 1983198866}
   m_Layer: 0
   m_Name: BoyOrange
-  m_TagString: TargetObject
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4502,7 +4566,7 @@ GameObject:
   - component: {fileID: 2109860613}
   m_Layer: 0
   m_Name: BoyBlue
-  m_TagString: TargetObject
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

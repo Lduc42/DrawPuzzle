@@ -8,7 +8,7 @@ public class DrawController : MonoBehaviour
     [SerializeField]
     private LineRenderer LinePrefab;
     public PathGameObject pathGameObject;
-    [SerializeField] private MoveObjectAlongPath[] objects;
+    [SerializeField] private MoveObjectAlongPath[] characters;
     [SerializeField] private TargetObject[] targets;
     [SerializeField] private float obstacle_size;
     [SerializeField] private ObstacleScript[] obstacles;
@@ -98,54 +98,21 @@ public class DrawController : MonoBehaviour
     }
     public MoveObjectAlongPath GetObject(int index)
     {
-        return objects[index];
+        return characters[index];
     }
     public PathGameObject GetPath()
     {
         return pathGameObject;
     }
-/*    private void CheckStartValidPoint()
-    {
-        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        for (int i = 0; i < objects.Length; i++)
-        {
-            if (Mathf.Abs(newPoint.x - objects[i].transform.position.x) < intervalDistance &&
-                Mathf.Abs(newPoint.y - objects[i].transform.position.y) < intervalDistance)
-            {
-               *//* LinePrefab.startColor = objects[i].GetComponent<SpriteRenderer>().color;
-                LinePrefab.endColor = objects[i].GetComponent<SpriteRenderer>().color;*//*
-                Debug.Log("inbound");
-                pathGameObject = null;
-                canDraw = true;
-                start_id = i + 1;
-            }
-            else
-            {
-                Debug.Log(objects[i].transform.position);
-                Debug.Log("mouse: " + newPoint);
-                Debug.Log("invalid input");
-            }
-        }
-    }*/
-
     private void DrawToTarget()
     {
         // Mouse is still down and we are dragging, so keep drawing.
         //if object haven't been went to target, draw
         if (end_id == 0)
             Draw(Input.mousePosition);
-        /*        Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                for (int i = 0; i < targets.Length; i++)
-                {
-                    if (Mathf.Abs(newPoint.x - targets[i].transform.position.x) < intervalDistance &&
-                        Mathf.Abs(newPoint.y - targets[i].transform.position.y) < intervalDistance)
-                    {
-                        end_id = i + 1;
-                    }
-                }*/
         Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D collision = collision = Physics2D.OverlapPoint(newPoint);
-        if (collision.CompareTag("TargetObject"))
+        if (collision != null && collision.CompareTag("TargetObject"))
         {
             TargetObject target_object = collision.GetComponent<TargetObject>();
             end_id = target_object.GetId();
