@@ -5,6 +5,7 @@ using UnityEngine;
 public class TargetObject : MonoBehaviour
 {
     [SerializeField] private int id;
+    public GameObject lastPosition;
     // Start is called before the first frame update
     void Start()
     {

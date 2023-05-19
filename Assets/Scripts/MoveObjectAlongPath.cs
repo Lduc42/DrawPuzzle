@@ -6,7 +6,7 @@ public class MoveObjectAlongPath : MonoBehaviour
 {
     #region declare
     public float speed = 1f; // Tốc độ di chuyển của object
-    private float travel_time = 10;
+    private float travel_time = 5;
     private int currentPointIndex = 0; // Index hiện tại của điểm đang xét
     private Vector3 currentPoint; // Điểm hiện tại đang xét
     public PathGameObject pathGameObject;
@@ -139,7 +139,7 @@ public class MoveObjectAlongPath : MonoBehaviour
                 if (collidedId == pathGameObject.GetId())
                 {
                     Debug.Log("pass point");
-                    collidedObject.gameObject.SetActive(false);
+                    //collidedObject.gameObject.SetActive(false);
                     not_move = true;
                     state_manager.current_state = collidedObject.GetState();
                     StartCoroutine(Delay(0.8f));
@@ -164,6 +164,15 @@ public class MoveObjectAlongPath : MonoBehaviour
     IEnumerator Delay(float time)
     {
         yield return new WaitForSeconds(time);
+        if(state_manager.current_state != "Lose")
         not_move = false;
+    }
+    public CharacterStateManager GetState()
+    {
+        return state_manager;
+    }
+    public Subject GetTargetSubject()
+    {
+        return _subject;
     }
 }

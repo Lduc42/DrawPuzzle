@@ -12,7 +12,7 @@ public class PathGameObject : MonoBehaviour
     #endregion
     void Awake()
     {
-
+        if (Instance == null) Instance = this;
         lineRenderer = GetComponent<LineRenderer>();
     }
     void Start()

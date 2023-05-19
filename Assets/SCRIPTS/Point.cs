@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Spine.Unity;
 public class Point : MonoBehaviour
 {
     public int id;
-    public string state;
+    public State state;
+    public ParticleSystem lootAnimation;
+    public enum State
+    {
+        Idle, Move, LootBottom, LootHair, LootTop, Lose, Win
+    }
     // Start is called before the first frame update
     void Start()
     {
-        
+        lootAnimation = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -17,7 +22,7 @@ public class Point : MonoBehaviour
     {
         
     }
-/*    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("ObjectToMovement"))
         {
@@ -30,8 +35,8 @@ public class Point : MonoBehaviour
                 Debug.Log("collidedId: " + collidedId);
                 if (collidedId == id)
                 {
-                    Debug.Log("pass point");
-                    gameObject.SetActive(false);
+                    lootAnimation.Play();
+                    StartCoroutine(DelayToDeActive(0.7f));
                 }
                 else
                 {
@@ -39,8 +44,8 @@ public class Point : MonoBehaviour
                 }
             }
         }
-        
-    }*/
+
+    }
     public void SetId(int value)
     {
         id = value;
@@ -51,6 +56,11 @@ public class Point : MonoBehaviour
     }
     public string GetState()
     {
-        return state;
+        return state.ToString();
+    }
+    IEnumerator DelayToDeActive(float time)
+    {
+        yield return new WaitForSeconds(time);
+        gameObject.SetActive(false);
     }
 }

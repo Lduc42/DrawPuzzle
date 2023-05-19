@@ -8,12 +8,15 @@ public class TargetStateManager : MonoBehaviour,IObserver
     public AnimationReferenceAsset idle, lose, win;
     public string current_state;
     public string current_animation;
+    public ParticleSystem heart_animation;
+    private bool isCount;
     // Start is called before the first frame update
     void Start()
     {
         //skeletonAnimation = GetComponent<SkeletonAnimation>();
         current_state = "Idle";
         SetCharacterState(current_state);
+        heart_animation = GetComponentInChildren<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -46,10 +49,22 @@ public class TargetStateManager : MonoBehaviour,IObserver
     public void OnWin()
     {
         SetCharacterState("Win");
+        heart_animation.Play();
+        if (!isCount)
+        {
+            GameManager.Instance.AddCountState();
+            isCount = true;
+        }
     }
 
     public void OnLose()
     {
         SetCharacterState("Lose");
+        if (!isCount)
+        {
+            GameManager.Instance.AddCountState();
+            isCount = true;
+            GameManager.Instance.AddCountLose();
+        }
     }
 }

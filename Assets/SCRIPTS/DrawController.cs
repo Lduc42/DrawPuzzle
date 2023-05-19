@@ -3,15 +3,18 @@
 public class DrawController : MonoBehaviour
 {
     #region declare
-    public static DrawController Instance;
+    
+
     public float detectionDistance = .2f;
     [SerializeField]
     private LineRenderer LinePrefab;
+    public Color colorLine;
     public PathGameObject pathGameObject;
     [SerializeField] private MoveObjectAlongPath[] characters;
     [SerializeField] private TargetObject[] targets;
     [SerializeField] private float obstacle_size;
     [SerializeField] private ObstacleScript[] obstacles;
+    [SerializeField] private int max_line;
     private int countDraw = 0;
     private int targetId;
     private int start_id;
@@ -20,17 +23,19 @@ public class DrawController : MonoBehaviour
     private bool canAddToList = false;
     private float intervalDistance = 0.2f; //interval distance that can be correct start points
     #endregion
-    private void Awake()
-    {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-    }
+
+ 
 
     void Start()
     {
 
+    }
+
+    public void Init()
+    {
+       
+        PathManager.Instance.SetMaxLine(this.max_line);
+        PathManager.Instance.paths.Clear();
     }
     private void Update()
     {
@@ -64,6 +69,7 @@ public class DrawController : MonoBehaviour
             {
                 // Starting a new line. Instantiate our "Path Object"
                 pathGameObject = Instantiate(LinePrefab).GetComponent<PathGameObject>();
+                pathGameObject.transform.SetParent(this.transform);
                 pathGameObject.SetId(start_id);
             }
             else
@@ -80,18 +86,23 @@ public class DrawController : MonoBehaviour
                 pathGameObject.AddPosition(hitpoint);
             }    
         }
+     
     }
     public void Check()
     {
-      
         Vector2 newPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Collider2D collision = collision = Physics2D.OverlapPoint(newPoint);
-        if (collision.CompareTag("ObjectToMovement"))
+        if (collision != null && collision.CompareTag("ObjectToMovement"))
         {
             ObjectToMovement objectToMovement = collision.GetComponent<ObjectToMovement>();
             pathGameObject = null;
             canDraw = true;
             start_id = objectToMovement.GetId();
+            colorLine = objectToMovement.colorLine;
+            colorLine.a = 1;
+            LinePrefab.startColor = colorLine;
+            LinePrefab.endColor = colorLine;
+
             Debug.Log("start: " + start_id);
         }
 
@@ -114,7 +125,7 @@ public class DrawController : MonoBehaviour
         Collider2D collision = collision = Physics2D.OverlapPoint(newPoint);
         if (collision != null && collision.CompareTag("TargetObject"))
         {
-            TargetObject target_object = collision.GetComponent<TargetObject>();
+            TargetObject target_object = collision.transform.parent.GetComponent<TargetObject>();
             end_id = target_object.GetId();
         }
     }
@@ -126,7 +137,10 @@ public class DrawController : MonoBehaviour
         //check correct
         if (pathGameObject != null && end_id == pathGameObject.GetId())
         {
+            pathGameObject.AddPosition(targets[start_id - 1].lastPosition.transform.position);
             PathManager.Instance.AddPaths(pathGameObject);
+            Debug.Log("Du line");
+            
         }
         else
         {
@@ -145,5 +159,9 @@ public class DrawController : MonoBehaviour
         }
         end_id = 0;
         //pathGameObject = null;
+    }
+    public int GetMaxLine()
+    {
+        return max_line;
     }
 }
